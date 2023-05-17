@@ -39,6 +39,7 @@
   },
   "devDependencies": {
     "fs": "^0.0.1-security",
+    "rehype-slug": "^5.1.0",
     "unist-builder": "3.0.0",
     "unist-util-visit": "^4.1.1"
   }

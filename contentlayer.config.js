@@ -1,10 +1,9 @@
 
-import fs from "fs"
-import path from "path"
 import { defineDocumentType, makeSource } from "contentlayer/source-files"
 import rehypePrettyCode from "rehype-pretty-code"
 import { codeImport } from "remark-code-import"
 import remarkGfm from "remark-gfm"
+import rehypeSlug from "rehype-slug"
 import {rehypeComponent} from "./lib/rehype-component"
 import { visit } from "unist-util-visit"
 
@@ -35,9 +34,10 @@ export const Page = defineDocumentType(() => ({
   },
   computedFields,
 }))
-export const Post = defineDocumentType(() => ({
-  name: "Post",
-  filePathPattern: `posts/**/*.mdx`,
+
+export const Example = defineDocumentType(() => ({
+  name: "Example",
+  filePathPattern: `examples/**/*.mdx`,
   contentType: "mdx",
   fields: {
     title: {
@@ -47,21 +47,20 @@ export const Post = defineDocumentType(() => ({
     description: {
       type: "string",
     },
+    featured: {
+      type: "boolean",
+    }
   },
   computedFields,
 }))
-const rehypePrettyOptions = {
-  theme: 'one-dark-pro',
-  // keepBackground: true,
-  
-}
 
 export default makeSource({
   contentDirPath: "./content",
-  documentTypes: [Post, Page],
+  documentTypes: [Example, Page],
   mdx:{
     remarkPlugins:[remarkGfm,codeImport],
     rehypePlugins:[
+      rehypeSlug,
       rehypeComponent,
       () => (tree) => {
         visit(tree,(node) => {
@@ -69,7 +68,7 @@ export default makeSource({
           if(node?.type === 'element' && node?.tagName === 'pre'){
             const [codeEl] = node.children;
             if(codeEl.tagName !== "code") return;
-            node.__rawString__ = codeEl.children?.[0].value;
+            node.__rawstring__ = codeEl.children?.[0].value;
             node.__src__ = node.properties?.__src
           }
         })
@@ -77,7 +76,7 @@ export default makeSource({
       [
         rehypePrettyCode,
         {
-          theme: "one-dark-pro",
+          theme: "github-dark",
           onVisitLine(node) {
             // Prevent lines from collapsing in `display: grid` mode, and
             // allow empty lines to be copy/pasted
@@ -107,7 +106,7 @@ export default makeSource({
               return
             }
 
-            preElement.properties["__rawString__"] = node.__rawString__
+            preElement.properties["__rawstring__"] = node.__rawstring__
 
             if (node.__src__) {
               preElement.properties["__src__"] = node.__src__

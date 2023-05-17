@@ -26,7 +26,6 @@ export function rehypeComponent() {
     visit(tree, (node: UnistNode) => {
       // get the source code path from the the src props
       const { value: src } = getNodeAttributeByName(node, "src") || {};
-
       if (node.name === "DemoComponent") {
         const source = getComponentSourceFileContent(node);
         if (!source) return;
@@ -55,7 +54,6 @@ export function rehypeComponent() {
             ],
           })
         );
-
       }
     });
   };

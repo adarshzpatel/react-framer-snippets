@@ -1,3 +1,4 @@
+import {neutral} from "tailwindcss/colors"
 /** @type {import('tailwindcss').Config} */
 module.exports = {
   content: [
@@ -7,7 +8,8 @@ module.exports = {
   ],
   darkMode: ["class"],
   theme: {
-    extend: {},
+    extend: {
+    }
   },
   plugins: [require("@tailwindcss/typography")],
 }

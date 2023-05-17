@@ -4,14 +4,14 @@ import { useMDXComponent } from "next-contentlayer/hooks";
 import { cn } from "@/lib/utils";
 import { CopyButton } from "@/components/copy-button";
 import DemoComponent from "@/components/component-demo"
+import { examples } from "./examples";
 
 
 
 const components = {
   pre: ({className,...props}:React.HTMLAttributes<HTMLPreElement> & {__rawString__?:string}) => (
-      <pre className={cn("relative",className)} {...props}>
+      <pre className={cn("relative bg-neutral-950 p-2 m-0",className)} {...props}>
         {props?.children}
-        <CopyButton value={props['__rawString__'] as string} className="absolute top-2 right-2"/>
       </pre>
   ),
   code: ({ className, ...props }: React.HTMLAttributes<HTMLElement>) => (
@@ -25,6 +25,7 @@ const components = {
   ),
   Image,
   DemoComponent,
+  ...examples
 };
 interface MdxProps {
   code: string;
